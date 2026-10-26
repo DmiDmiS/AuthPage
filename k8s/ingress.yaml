@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sre-auth-ingress
+  annotations:
+    # Говорим ингрессу, что наш Django-контейнер не использует SSL (работает по HTTP)
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  ingressClassName: nginx # Указываем стандартный контроллер Nginx от Minikube
+  rules:
+  - host: auth.local # Наш придуманный локальный домен для портфолио
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: sre-auth-service # Имя нашего сервиса балансировщика
+            port:
+              number: 80 # Порт, который мы открыли в service.yaml

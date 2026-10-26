@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: sre-auth-service
+  labels:
+    app: sre-auth
+spec:
+  type: ClusterIP # Внутренний тип сервиса, доступный только внутри кластера
+  selector:
+    app: sre-auth # Сервис автоматически ищет все поды с этой меткой (наш Django)
+  ports:
+  - protocol: TCP
+    port: 80       # На каком порту сервис будет ждать запросы внутри кластера
+    targetPort: 8000 # На какой порт внутри самого контейнера эти запросы перенаправлять (наш порт Django)
